@@ -8,6 +8,7 @@ require("dotenv").config();
 const boardRoutes = require("./routes/boardRoutes");
 const userRoutes = require("./routes/userRoutes");
 const taskRoutes = require("./routes/taskRoutes");
+const path = require("path");
 
 const PORT = process.env.PORT || 5100;
 
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 5100;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
+app.use(express.static(path.join(__dirname, "client", "build")));
 
 //DB connect
 mongoose.connect(
@@ -40,6 +42,10 @@ app.use((err, req, res, next) => {
     res.status(err.status);
   }
   return res.send({ errMsg: err.message });
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 //server listen
