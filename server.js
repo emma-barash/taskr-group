@@ -18,7 +18,7 @@ app.use(morgan("dev"));
 
 //DB connect
 mongoose.connect(
-  "mongodb://localhost:27017/taskr",
+  process.env.MONGODB_URI || "mongodb://localhost:27017/taskr",
   { useNewUrlParser: true, useCreateIndex: true },
   () => console.log("connected to DB".rainbow)
 );
